@@ -133,8 +133,6 @@ class Application(Frame):
             ctr += 1
 
             track = src.split('\\')[-1]
-            print(track)
-            print( len(track.split('-')))
 
             if len(track.split('-')) == 3:
                 track_name = track.split('-')[2]
@@ -154,7 +152,6 @@ class Application(Frame):
                  track_name = track
                  start = 'A'
 
-            print(track_name)
             new_file_name = f'{start}{ctr:03d}-{track_name}'
 
             if os.path.exists(src):
