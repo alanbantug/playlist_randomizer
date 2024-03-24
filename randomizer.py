@@ -117,11 +117,13 @@ class Application(Frame):
         self.processControl(1)
         
         sourceFiles = []
+        sourceFolders = []
 
         for folder, subs, files in os.walk(self.source):
 
             for file in files:
-                sourceFiles.append(file)
+                sourceFolders.append(folder)
+                sourceFiles.append(os.path.join(folder, file))
 
         random.shuffle(sourceFiles)
         ctr = 0
@@ -130,27 +132,40 @@ class Application(Frame):
 
             ctr += 1
 
-            if src.startswith('A'):
-                start = 'B'
-            else:
-                start = 'A'
-            
-            if len(src.split('-')) == 3:
-                track_name = src.split('-')[2]
-            else:
-                track_name = src.split('-')[1]
+            track = src.split('\\')[-1]
+            print(track)
+            print( len(track.split('-')))
 
+            if len(track.split('-')) == 3:
+                track_name = track.split('-')[2]
+                if track.startswith('A'):
+                    start = 'B'
+                else:
+                    start = 'A'
+
+            elif len(track.split('-')) == 2:
+                track_name = track.split('-')[1]
+                if track.startswith('A'):
+                    start = 'B'
+                else:
+                    start = 'A'
+
+            else:
+                 track_name = track
+                 start = 'A'
+
+            print(track_name)
             new_file_name = f'{start}{ctr:03d}-{track_name}'
 
-            if os.path.exists(os.path.join(self.source, src)):
+            if os.path.exists(src):
                 
                 ''' copy file to new name
                 '''
-                shutil.copy(os.path.join(self.source, src), os.path.join(self.source, new_file_name))
+                shutil.copy(src, os.path.join(self.source, new_file_name))
                 
                 ''' remove file name
                 '''
-                os.remove(os.path.join(self.source, src))
+                os.remove(src)
             else:
                 print('Not found')
 
